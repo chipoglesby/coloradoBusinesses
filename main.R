@@ -1,5 +1,10 @@
 # Load most commonly used libraries
+list.of.packages <- c("RSocrata", "tidyverse", "magrittr")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
 
+library(RSocrata)
+library(readr)
 library(tidyverse)
 
 # ---- begin ----
