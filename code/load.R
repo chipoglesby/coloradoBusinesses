@@ -1,26 +1,17 @@
 # Download data and fix types
 
-if(!file.exists("data/coloradoBusinesses.csv")){
+if(!file.exists("data/cleaned/entities.csv")){
   if(!file.exists("token.txt")){
    print("You need an API token first")
   } else {
     token <- read_file("token.txt")
-    coloradoBusinesses <- read.socrata("https://data.colorado.gov/resource/4eit-nuxn.json", app_token = token)
-    coloradoBusinesses$averagerent <- as.numeric(coloradoBusinesses$averagerent)
-    coloradoBusinesses$year <- as.integer(coloradoBusinesses$year)
-    coloradoBusinesses$quarter <- as.integer(coloradoBusinesses$quarter)
-
+    entities <- read.socrata("https://data.colorado.gov/resource/4eit-nuxn.json", app_token = token)
+  
     # Save data to CSV
-    write_csv(coloradoBusinesses, "data/coloradoBusinesses.csv")
+    write_csv(entities, "data/entities.csv")
   }
 } else {
-  coloradoBusinesses <- read_csv("data/coloradoBusinesses.csv")
-  coloradoBusinesses %<>%
+  entities <- read_csv("data/cleaned/entities.csv")
+  entities %<>%
     na.omit()
-  coloradoBusinesses$averagerent <- as.numeric(coloradoBusinesses$averagerent)
-  coloradoBusinesses$year <- as.integer(coloradoBusinesses$year)
-  coloradoBusinesses$quarter <- as.integer(coloradoBusinesses$quarter)
 }
-
-coloradoBusinessesAll <- coloradoBusinesses %>%
-  filter(tolower(apartmenttype) == 'all')
